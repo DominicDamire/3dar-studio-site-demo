@@ -13,8 +13,8 @@ A visualisation studio sells on how its images feel, but a typical portfolio pag
 ## Screens
 
 ![Hero](screens/hero.png)
-![Renders wall](screens/wall.png)
-![Project library](screens/projects.png)
+![Contact page (placeholder details)](screens/contact.png)
+![Projects](screens/projects.png)
 
 ## What it does
 
