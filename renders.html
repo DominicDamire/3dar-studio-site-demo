@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<script src="transition-boot.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Проекты — STUDIO 3DAR</title>
+<meta name="description" content="Семь архитектурных проектов студии 3DAR. Выберите проект, чтобы посмотреть все рендеры.">
+<link rel="icon" href="data:,">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css?v=20260906b">
+<link rel="stylesheet" href="library-reel.css?v=20260909-alignment">
+<link rel="stylesheet" href="project-library.css">
+<link rel="stylesheet" href="library-border.css">
+<link rel="stylesheet" href="editorial-type.css">
+<link rel="stylesheet" href="feedback-transition.css">
+</head>
+<body class="subpage project-library">
+<div class="library-shell" data-nogoo>
+<header class="library-nav"><a class="library-mark" href="index.html" aria-label="3DAR — на главную">3DAR<span>.</span></a></header>
+<main class="library" aria-label="Слайдер проектов">
+  <div class="library-copy">
+    <span class="library-eyebrow">АРХИТЕКТУРА В КАДРЕ · 01—07</span>
+    <h1>Семь проектов,<br>разные истории</h1>
+    <p>Листайте коллекцию и откройте<br>тот, что привлёк ваше внимание.</p>
+    <button class="library-open" type="button">Открыть проект <span aria-hidden="true">↗</span></button>
+  </div>
+  <div class="cascade" role="region" aria-roledescription="карусель" aria-label="Семь проектов"></div>
+  <div class="library-progress">
+    <div class="library-count"><strong>01</strong><span>/07</span></div>
+    <div class="library-track" aria-label="Выбрать проект"><div class="library-rail" aria-hidden="true"><i></i></div></div>
+    <span class="library-scroll">ПРОКРУТИТЕ</span>
+  </div>
+  <div class="library-bottom"><span>STUDIO 3DAR © 2026</span><span class="library-status" aria-live="polite"></span><div class="library-arrows"><button type="button" data-direction="-1" aria-label="Предыдущий проект">↑</button><button type="button" data-direction="1" aria-label="Следующий проект">↓</button></div></div>
+</main>
+</div>
+<div class="reel" id="js-reel" role="dialog" aria-modal="true" aria-label="Проект">
+  <div class="reel__wash" id="js-reel-w0"></div>
+  <div class="reel__wash" id="js-reel-w1"></div>
+  <div class="reel__veil"></div>
+  <div class="reel__stage" id="js-reel-stage"><figure class="slide reel__intro" id="js-reel-intro" hidden></figure></div>
+  <svg class="reel__arc" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true"><path d="M-120 780C260 520 880 910 1560 430"/></svg>
+  <div class="reel__hud">
+    <div class="reel__others" id="js-reel-others" aria-label="Другие проекты"></div>
+    <div class="reel__id"><i></i><b id="js-reel-name"></b><span id="js-reel-num"></span></div>
+    <div class="reel__spec">
+      <span id="js-reel-count"></span>
+      <span>STUDIO 3DAR</span>
+      <button class="reel__tool" id="js-reel-fs" type="button">Во весь экран</button>
+      <button class="reel__tool" id="js-reel-zoom" type="button">Увеличить</button>
+      <a class="lnk" id="js-reel-more" href="renders.html">Все рендеры <svg fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow"/></svg></a>
+    </div>
+    <div class="reel__bar">
+      <button class="reel__all" id="js-reel-all" type="button" aria-pressed="false">Все кадры</button>
+      <div class="reel__row">
+        <button class="arw" id="js-reel-prev" type="button" aria-label="Предыдущий кадр"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <div id="js-reel-dots"></div>
+        <button class="arw" id="js-reel-next" type="button" aria-label="Следующий кадр"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <div class="reel__grid" id="js-reel-grid" hidden></div>
+  <div class="reel__big" id="js-reel-big" hidden><img alt=""></div>
+  <button class="reel__skip" id="js-reel-skip" type="button" hidden>Пропустить</button>
+  <button class="reel__close" type="button" aria-label="Закрыть"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+</div>
+<script src="site.js?v=20260906b"></script>
+<script src="library-reel.js"></script>
+<script src="project-library.js"></script>
+</body>
+</html>

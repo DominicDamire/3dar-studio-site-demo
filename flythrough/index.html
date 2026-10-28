@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<link rel="icon" href="data:,">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>STUDIO 3DAR — scroll flythrough</title>
+<meta name="description" content="Scroll-driven flythrough: from the courtyard into the apartment.">
+<style>
+  @view-transition{navigation:auto} /* the other pages opt in; both sides must, or the departing page logs an abort */
+  :root{ --scroll-length: 555vh; --ink:#000525; --accent:#9b8cff; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ink);color:#fff;
+       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+
+  #scene{height:var(--scroll-length);position:relative}
+  #stage{position:sticky;top:0;height:100svh;overflow:hidden;background:var(--ink)}
+  video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+  /* logo sits in the sky, then the camera flies through it */
+  #logo{position:absolute;top:50%;left:50%;width:clamp(150px,20vw,380px);
+        transform:translate(-50%,-50%);transform-origin:50% 50%;
+        will-change:transform,opacity;filter:drop-shadow(0 2px 40px rgba(0,10,40,.5))}
+  #logo svg{display:block;width:100%;height:auto;color:#fff}
+
+  #hint{position:absolute;left:50%;bottom:clamp(20px,4vh,48px);transform:translateX(-50%);
+        font-size:11px;letter-spacing:.24em;text-transform:uppercase;opacity:.7;
+        will-change:opacity;pointer-events:none;text-shadow:0 1px 12px rgba(0,10,40,.6)}
+  #hint span{display:block;width:1px;height:30px;margin:10px auto 0;
+             background:linear-gradient(#fff,transparent)}
+  #bar{position:absolute;left:0;bottom:0;height:2px;background:var(--accent);width:0}
+
+  #loading{position:absolute;inset:0;display:grid;place-items:center;
+           font-size:11px;letter-spacing:.24em;text-transform:uppercase;opacity:.6;
+           background:var(--ink);transition:opacity .5s}
+  #loading.gone{opacity:0;pointer-events:none}
+
+  @media (prefers-reduced-motion:reduce){ #scene{height:100svh} #hint{display:none} }
+</style>
+</head>
+<body>
+<div id="scene">
+  <div id="stage">
+    <video id="flight" playsinline muted preload="auto" disablepictureinpicture></video>
+
+    <div id="logo">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 81.5 38" fill="none" role="img" aria-label="3DAR">
+        <path d="M20.8 0H30.4436C33.5103 0 35.7827 0.796191 37.2606 2.38857C38.7755 3.98095 39.533 6.31524 39.533 9.39143V28.6086C39.533 31.6848 38.7755 34.019 37.2606 35.6114C35.7827 37.2038 33.5103 38 30.4436 38H20.8V0ZM26.8965 5.42857V32.5714H30.3327C31.2934 32.5714 32.0508 32.3 32.6051 31.7571C33.1593 31.2143 33.4364 30.2552 33.4364 28.88V9.12C33.4364 7.74476 33.1593 6.78571 32.6051 6.24286C32.0508 5.7 31.2934 5.42857 30.3327 5.42857H26.8965Z" fill="currentColor"/>
+        <path d="M61.4918 38H55.3398L54.2868 31.1057H46.8046L45.7516 38H40.1539L46.3613 0H55.2844L61.4918 38ZM47.5806 25.9486H53.4554L50.518 6.73143L47.5806 25.9486Z" fill="currentColor"/>
+        <path d="M75.4155 38C75.3416 37.7467 75.2677 37.5114 75.1938 37.2943C75.1199 37.0771 75.046 36.8057 74.9721 36.48C74.9352 36.1543 74.8982 35.7381 74.8613 35.2314C74.8613 34.7248 74.8613 34.0914 74.8613 33.3314V27.36C74.8613 25.5867 74.5472 24.3381 73.9191 23.6143C73.291 22.8905 72.2749 22.5286 70.8708 22.5286H68.7647V38H62.6682V0H71.8684C75.046 0 77.3368 0.72381 78.7409 2.17143C80.1819 3.61905 80.9024 5.80857 80.9024 8.74V11.7257C80.9024 15.6343 79.5722 18.2038 76.9119 19.4343C78.4638 20.0495 79.5168 21.0629 80.0711 22.4743C80.6622 23.8495 80.9578 25.5324 80.9578 27.5229V33.3857C80.9578 34.3267 80.9948 35.159 81.0687 35.8829C81.1426 36.5705 81.3273 37.2762 81.6229 38H75.4155ZM68.7647 5.42857V17.1H71.1479C72.2933 17.1 73.1801 16.8105 73.8082 16.2314C74.4733 15.6524 74.8059 14.6029 74.8059 13.0829V9.33715C74.8059 7.96191 74.5472 6.96667 74.0299 6.35143C73.5496 5.73619 72.7737 5.42857 71.7022 5.42857H68.7647Z" fill="currentColor"/>
+        <path d="M18.733 2.58854e-06V38H9.08935C6.0226 38 3.75021 37.2037 2.27226 35.6113C0.757414 34.0189 0 31.6847 0 28.6085V24.2689H6.0966V28.8801C6.09662 30.2553 6.37367 31.2144 6.92789 31.7572C7.48211 32.3 8.23952 32.5714 9.20014 32.5714H12.6364V5.42857H9.20014C8.23952 5.42858 7.48211 5.69999 6.92789 6.2428C6.37367 6.78564 6.09662 7.7447 6.0966 9.11986V14.3697H0V9.39148C0 6.31534 0.757414 3.9811 2.27226 2.38872C3.75021 0.796342 6.0226 2.58854e-06 9.08935 2.58854e-06H18.733Z" fill="currentColor"/>
+        <path d="M6.27903 16.9244H13.1254V21.0756H6.27903V16.9244Z" fill="currentColor"/>
+      </svg>
+    </div>
+
+    <div id="hint">scroll<span></span></div>
+    <div id="bar"></div>
+    <div id="loading">loading</div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const v = document.getElementById('flight');
+  const scene = document.getElementById('scene');
+  const logo = document.getElementById('logo');
+  const hint = document.getElementById('hint');
+  const bar  = document.getElementById('bar');
+  const load = document.getElementById('loading');
+
+  // small screens get the lighter encode; everything is all-intra so it scrubs
+  const small = Math.min(innerWidth, innerHeight) < 700 || navigator.connection?.saveData;
+  const queue = small ? ['cut_light.mp4','cut.mp4'] : ['cut.mp4','cut_light.mp4'];
+  let qi = -1;
+  const nextTier = () => { if (++qi < queue.length) { v.src = 'video/' + queue[qi]; v.load(); } };
+  v.addEventListener('error', nextTier);
+
+  let dur = 0;
+  v.addEventListener('loadedmetadata', () => { dur = v.duration; onScroll(); });
+  v.addEventListener('canplay', () => load.classList.add('gone'), {once:true});
+  nextTier();
+
+  // the logo holds, then the camera flies through it
+  const LOGO_EXIT = 0.06;
+
+  function onScroll(){
+    const max = scene.offsetHeight - innerHeight;
+    const p = max > 0 ? Math.min(1, Math.max(0, scrollY / max)) : 0;
+
+    const k = Math.min(1, p / LOGO_EXIT);
+    logo.style.transform = `translate(-50%,-50%) scale(${1 + k * 14})`;
+    logo.style.opacity = String(1 - k * k);
+    logo.style.visibility = k >= 1 ? 'hidden' : 'visible';
+    hint.style.opacity = String(Math.max(0, 0.7 - p * 14));
+    bar.style.width = (p * 100) + '%';
+
+    // seek straight away rather than inside requestAnimationFrame: rAF is
+    // throttled whenever the tab is not focused, which froze the video while
+    // the logo kept animating. All-intra keeps a seek at ~7ms, so this is cheap.
+    const target = p * (dur || 0);
+    if (dur && Math.abs(v.currentTime - target) > 0.01) v.currentTime = target;
+  }
+  addEventListener('scroll', onScroll, {passive:true});
+  addEventListener('resize', onScroll);
+  onScroll();
+})();
+</script>
+</body>
+</html>
